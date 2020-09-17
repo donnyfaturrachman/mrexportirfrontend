@@ -4,7 +4,6 @@
 <script>
 
 export default {
-    import $ from "jquery"
     middleware:['check-auth','auth'],
      head() {
           return {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header/>
-              <section class="wrapper">
+    <section class="wrapper">
         <div class="container">
             <div class="row">
 
@@ -26,38 +26,62 @@
                     <div id="personal" class="tab-pane fade in active">
                         <div class="col-md-6 col-md-offset-7 col-xs-12">
                             <div class="login-box">
-                                <form action="/action_page.php">
+                                <form method="post" @submit.prevent="register">
                                     <div class="form-group">
-                                        <input type="text" placeholder="Nama Depan" class="form-control">
+                                        <input type="text" placeholder="Nama Depan"
+                                         v-model="nama_depan"
+                                         required
+                                        class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" placeholder="Nama Belakang" class="form-control">
+                                        <input type="text" placeholder="Nama Belakang"
+                                          v-model="nama_belakang"
+                                         required
+                                        class="form-control">
                                     </div>
                                     <div class="form-group form-group-odd">
-                                        <input type="email" placeholder="E-mail" class="form-control">
+                                        <input type="email"
+                                          v-model="email"
+                                         required
+                                        placeholder="E-mail" class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" placeholder="No.Hp" class="form-control">
+                                        <input type="text"
+                                          v-model="nohp"
+                                         required
+                                        placeholder="No.Hp" class="form-control">
                                     </div>
                                     <div class="form-group form-group-odd">
-                                        <input type="password" placeholder="Password" class="form-control" id="pwd">
+                                        <input type="password"
+                                          v-model="password"
+                                         required
+                                        placeholder="Password" class="form-control" id="pwd">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" placeholder="Ulangi Password" class="form-control" id="pwd">
+                                        <input type="password"
+                                           v-model="c_password"
+                                         required
+                                        placeholder="Ulangi Password" class="form-control" id="pwd">
                                     </div>
                                     <div class="form-group form-group-odd">
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" value="">Saya menyetujui syarat dan ketentuan dan pernyataan privasi MisterExportir
+                                            <input type="checkbox"
+                                               v-model="tos"
+                                              required
+                                             >Saya menyetujui syarat dan ketentuan dan pernyataan privasi MisterExportir
                                           </label>
                                     </div>
                                     <div class="form-group">
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" value="">Saya bersedia menerima penawaran dan berita terbaru tentang produk
+                                            <input type="checkbox"
+                                              v-model="update"
+                                              required
+                                            >Saya bersedia menerima penawaran dan berita terbaru tentang produk
                                           </label>
                                     </div>
                                     <div class='row'>
                                         <div class='col-md-12 text-center'>
-                                            <button type="button" class="btn btn-cek">Daftar</button>
+                                            <button type="submit" class="btn btn-cek">Daftar</button>
                                         </div>
                                     </div>
                                 </form>
@@ -67,47 +91,77 @@
                     <div id="perusahaan" class="tab-pane fade in ">
                         <div class="col-md-6 col-md-offset-7 col-xs-12">
                             <div class="login-box">
-                                <form action="/action_page.php">
+                                <form method="post" @submit.prevent="registercompany">
                                     <div class="form-group">
-                                        <input type="text" placeholder="Nama Perusahaan" class="form-control">
+                                        <input type="text"
+                                          v-model="perusahaan"
+                                         required
+                                        placeholder="Nama Perusahaan" class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" placeholder="NPWP" class="form-control">
+                                        <input type="text" placeholder="NPWP"
+                                           v-model="npwp"
+                                           required
+                                         class="form-control">
                                     </div>
                                     <b>Penanggung Jawab</b>
                                     <br/>
                                     <br/>
                                     <div class="form-group">
-                                        <input type="text" placeholder="Nama Depan" class="form-control">
+                                        <input type="text" placeholder="Nama Depan"
+                                           v-model="nama_depan"
+                                         required
+                                         class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" placeholder="Nama Belakang" class="form-control">
+                                        <input type="text" placeholder="Nama Belakang"
+                                           v-model="nama_belakang"
+                                         required
+                                        class="form-control">
                                     </div>
                                     <div class="form-group form-group-odd">
-                                        <input type="email" placeholder="E-mail" class="form-control">
+                                        <input type="email"
+                                         v-model="email"
+                                         required
+                                        placeholder="E-mail" class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" placeholder="No.Hp" class="form-control">
+                                        <input type="text"
+                                        v-model="nohp"
+                                         required
+                                        placeholder="No.Hp" class="form-control">
                                     </div>
                                     <div class="form-group form-group-odd">
-                                        <input type="password" placeholder="Password" class="form-control" id="pwd">
+                                        <input type="password"
+                                           v-model="password"
+                                         required
+                                        placeholder="Password" class="form-control" id="pwd">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" placeholder="Ulangi Password" class="form-control" id="pwd">
+                                        <input type="password"
+                                           v-model="c_password"
+                                         required
+                                        placeholder="Ulangi Password" class="form-control" id="pwd">
                                     </div>
                                     <div class="form-group form-group-odd">
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" value="">Saya menyetujui syarat dan ketentuan dan pernyataan privasi MisterExportir
+                                            <input type="checkbox"
+                                               v-model="tos"
+                                               required
+                                            value="">Saya menyetujui syarat dan ketentuan dan pernyataan privasi MisterExportir
                                           </label>
                                     </div>
                                     <div class="form-group">
                                         <label class="checkbox-inline">
-                                            <input type="checkbox" value="">Saya bersedia menerima penawaran dan berita terbaru tentang produk
+                                            <input type="checkbox"
+                                            v-model="update"
+                                            required
+                                            value="">Saya bersedia menerima penawaran dan berita terbaru tentang produk
                                           </label>
                                     </div>
                                     <div class='row'>
                                         <div class='col-md-12 text-center'>
-                                            <button type="button" class="btn btn-cek">Daftar</button>
+                                            <button type="submit" class="btn btn-cek">Daftar</button>
                                         </div>
                                     </div>
                                 </form>
@@ -123,6 +177,9 @@
   </div>
 </template>
 <script>
+
+import axios from 'axios'
+import Vue from 'vue'
 import Header from '@/components/auth/Header'
 import Footer from '@/components/auth/Footer'
 
@@ -133,6 +190,54 @@ export default {
       Header,
       Footer
     },
+
+    data() {
+      return {
+        nama_depan: '',
+        nama_belakang: '',
+        email: '',
+        nohp: '',
+        password: '',
+        c_password: '',
+        tos:'',
+        update:'',
+        npwp:'',
+        perusahaan:'',
+        error: null
+      }
+    },
+    methods: {
+       async registercompany() {
+          var bodyFormData = new FormData()
+          bodyFormData.append('nama_depan', this.nama_depan)
+          bodyFormData.append('nama_belakang', this.nama_belakang)
+          bodyFormData.append('email', this.email)
+          bodyFormData.append('nohp', this.nohp)
+          bodyFormData.append('password', this.password)
+          bodyFormData.append('c_password', this.c_password)
+          bodyFormData.append('tos', this.tos)
+          bodyFormData.append('npwp', this.npwp)
+          bodyFormData.append('perusahaan', this.perusahaan)
+          bodyFormData.append('update', this.update)
+          this.$store.dispatch('RegisterCompany',bodyFormData).then(()=>{
+
+          })
+      },
+      async register() {
+          var bodyFormData = new FormData()
+          bodyFormData.append('nama_depan', this.nama_depan)
+          bodyFormData.append('nama_belakang', this.nama_belakang)
+          bodyFormData.append('email', this.email)
+          bodyFormData.append('nohp', this.nohp)
+          bodyFormData.append('password', this.password)
+          bodyFormData.append('c_password', this.c_password)
+          bodyFormData.append('tos', this.tos)
+          bodyFormData.append('update', this.update)
+          this.$store.dispatch('RegisterUser',bodyFormData).then(()=>{
+
+          })
+      }
+    }
 
 }
 </script>

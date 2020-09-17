@@ -8,23 +8,29 @@
                     <h3 class="text-center">Masuk ke XportKu </h3>
                     <h4 class="text-center">Buat dan Kelola Pengirimanmu</h4>
                     <div class="login-box">
-                        <form action="/action_page.php">
+                        <form method="post" @submit.prevent="login">
                             <div class="form-group">
-                                <input type="email" placeholder="Alamat Email" class="form-control" id="email">
+                                <input type="email" placeholder="Alamat Email"
+                                 v-model="email"
+                                  required
+                                 class="form-control" id="email">
                             </div>
                             <div class="form-group">
-                                <input type="password" placeholder="Password" class="form-control" id="pwd">
+                                <input type="password"
+                                   v-model="password"
+                                  required
+                                placeholder="Password" class="form-control" id="pwd">
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <button type="button" class="btn btn-cek">Masuk</button>
+                                    <button type="submit" class="btn btn-cek">Masuk</button>
                                 </div>
                                 <div class="col-md-9">
                                     <span class="forgot">
                                         <div>
                                            <a href="#"> Lupa Password</a>
                                            <br/>
-                                           <a href="#">  Belum punya akun? Daftar sekarang!</a>
+                                           <nuxt-link to="/auth/register">  Belum punya akun? Daftar sekarang!</nuxt-link >
                                         </div>
 
 
@@ -43,6 +49,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 import Header from '@/components/auth/Header'
 import Footer from '@/components/auth/Footer'
 
@@ -53,6 +60,25 @@ export default {
       Header,
       Footer
     },
+
+     data() {
+      return {
+        email: '',
+        password: '',
+        error: null
+      }
+    },
+      methods: {
+        async login() {
+              var bodyFormData = new FormData()
+              bodyFormData.append('email', this.email)
+              bodyFormData.append('password', this.password)
+              this.$store.dispatch('loginUser',bodyFormData).then(()=>{
+                    this.$router.push('/dashboard')
+              })
+        }
+
+    }
 
 }
 </script>
@@ -81,6 +107,7 @@ export default {
     }
 
     .btn-cek {
+
         font-weight: bold;
         padding: 5px 26px !important;
         font-size: 17px;

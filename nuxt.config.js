@@ -24,6 +24,9 @@ export default {
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
         ]
     },
+    env: {
+        baseUrl: process.env.BASE_URL || 'http://127.0.0.1:8000/api/'
+    },
     /*
      ** Global CSS
      */
@@ -33,7 +36,7 @@ export default {
      ** https://nuxtjs.org/guide/plugins
      */
     plugins: [
-        '~/plugins/bootsrap.js',
+
     ],
     /*
      ** Auto import components
@@ -48,8 +51,25 @@ export default {
      ** Nuxt.js modules
      */
     modules: [
-
+        '@nuxtjs/toast'
     ],
+    toast: {
+        position: 'top-center',
+        duration: 2000,
+        register: [ // Register custom toasts
+            {
+                name: 'my-error',
+                message: 'Oops...Something went wrong',
+                options: {
+                    type: 'error'
+                }
+            }
+        ]
+    },
+    transition: {
+        name: 'fade',
+        mode: 'out-in'
+    },
     /*
      ** Build configuration
      ** See https://nuxtjs.org/api/configuration-build/

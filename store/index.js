@@ -80,7 +80,7 @@ const createStore = () => {
             },
             logout(vuexContext) {
                 vuexContext.commit("clearToken");
-                Cookie.remove("jwt");
+                Cookies.remove("jwt");
                 if (process.client) {
                     localStorage.removeItem("token");
                 }

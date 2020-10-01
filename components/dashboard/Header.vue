@@ -87,7 +87,7 @@
               </div>
 
               <ul class="list-unstyled user-profile-nav">
-                <li ><a  href="#" ><i class="icon ion-power"></i> Sign Out</a></li>
+                <li ><a  href="#" @click="onLogout"><i class="icon ion-power"></i> Sign Out</a></li>
               </ul>
             </div><!-- dropdown-menu -->
           </div><!-- dropdown -->
@@ -96,4 +96,14 @@
       </div><!-- br-header-right -->
     </div><!-- br-header -->
 </template>
+<script>
+export default {
+    methods:{
 
+      onLogout(){
+          this.$store.dispatch('logout')
+          this.$router.push('/auth/login')
+      }
+  }
+}
+</script>

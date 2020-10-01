@@ -241,7 +241,7 @@ export default {
 
 }
 </script>
-<style>
+<style scoped>
 
     .logo-top {
         max-width: 200px !important;

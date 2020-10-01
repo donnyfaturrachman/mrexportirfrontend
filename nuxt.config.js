@@ -36,7 +36,12 @@ export default {
      ** https://nuxtjs.org/guide/plugins
      */
     plugins: [
-
+        { src: '~/assets/dashboard/lib/jquery/jquery.min.js', ssr: false },
+        { src: '~/assets/dashboard/lib/bootstrap/js/bootstrap.bundle.min.js', ssr: false },
+        { src: '~/assets/dashboard/js/bracket.js', ssr: false },
+        { src: '~/assets/dashboard/js/map.shiftworker.js', ssr: false },
+        { src: '~/assets/dashboard/js/ResizeSensor.js', ssr: false },
+        { src: '~/assets/dashboard/js/dashboard.js', ssr: false }
     ],
     /*
      ** Auto import components
@@ -51,8 +56,13 @@ export default {
      ** Nuxt.js modules
      */
     modules: [
+        '@nuxtjs/axios',
         '@nuxtjs/toast'
+
     ],
+    axios: {
+
+    },
     toast: {
         position: 'top-center',
         duration: 2000,

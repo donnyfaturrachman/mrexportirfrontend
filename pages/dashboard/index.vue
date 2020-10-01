@@ -275,6 +275,6 @@
       Sidebar,
       Header,
       Footer
-    },
+    }
   }
 </script>

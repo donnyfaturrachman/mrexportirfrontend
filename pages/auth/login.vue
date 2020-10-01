@@ -60,7 +60,6 @@ export default {
       Header,
       Footer
     },
-
      data() {
       return {
         email: '',
@@ -75,6 +74,7 @@ export default {
               bodyFormData.append('password', this.password)
               this.$store.dispatch('loginUser',bodyFormData).then(()=>{
                     this.$router.push('/dashboard')
+
               })
         }
 
@@ -82,7 +82,7 @@ export default {
 
 }
 </script>
-<style>
+<style scoped>
     .logo-top {
         max-width: 200px;
     }

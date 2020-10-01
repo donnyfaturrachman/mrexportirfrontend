@@ -1,15 +1,12 @@
 import Vuex from 'vuex'
-import axios from 'axios'
 import Cookies from "js-cookie"
 const createStore = () => {
-
     return new Vuex.Store({
         state: {
             token: null
         },
         mutations: {
             setToken(state, token) {
-
                 state.token = token;
             },
             clearToken(state) {
@@ -17,73 +14,76 @@ const createStore = () => {
             }
         },
         actions: {
-            loginUser(vuexContext, authData) {
-
-                axios({
-                        method: 'post',
-                        url: process.env.baseUrl + 'authlogin',
-                        data: authData,
-                        headers: { 'Content-Type': 'multipart/form-data' }
-                    })
-                    .then(function(response) {
-                        //handle success
-                        vuexContext.commit("setToken", response.data.token)
-                        localStorage.setItem("token", response.data.token)
-
-
-                        Cookies.set("jwt", response.data.token);
-
-                    })
-                    .catch(function(err) {
-                        //handle error
-
-
-
-                    })
+            async loginUser(vuexContext, authData) {
+                try {
+                    await this.$axios.$post(process.env.baseUrl + 'authlogin', authData).then((response) => {
+                        vuexContext.commit("setToken", response.token)
+                        localStorage.setItem("token", response.token)
+                        Cookies.set("jwt", response.token);
+                    });
+                    this.$toast.show('Success .....')
+                } catch (e) {
+                    this.$toast.show('User Not Found')
+                }
             },
-            RegisterUser(vuexContext, authData) {
-                axios({
-                        method: 'post',
-                        url: process.env.baseUrl + 'authregister',
-                        data: authData,
-                        headers: { 'Content-Type': 'multipart/form-data' }
+            async RegisterUser(vuexContext, authData) {
+                try {
+                    await this.$axios.$post(process.env.baseUrl + 'authregister', authData).then((response) => {
+
+                        vuexContext.commit("setToken", response.token)
+                        localStorage.setItem("token", response.token)
+                        Cookies.set("jwt", response.token);
                     })
-                    .then(function(response) {
-                        //handle success
-                        vuexContext.commit("setToken", response.data.token)
-                        localStorage.setItem("token", response.data.token)
+                    this.$toast.show('Success .....')
+                    this.$router.push('/dashboard')
+                } catch (e) {
+                    var err = []
+                    if (e.response) {
+                        if (e.response.data) {
+                            var obj = JSON.parse(JSON.stringify(e.response.data))
+                            Object.keys(obj).forEach(function(key) {
 
-                        Cookies.set("jwt", response.data.token);
-
-                    })
-                    .catch(function(err) {
-                        //handle error
-
-
-
-                    })
+                                err.push(obj[key][0])
+                            });
+                        }
+                    }
+                    for (var i = 0; i < err.length; i++) {
+                        this.$toast.show(err[i])
+                    }
+                    this.$toast.show('Failed Register')
+                }
             },
-            RegisterUser(vuexContext, authData) {
-                axios({
-                        method: 'post',
-                        url: process.env.baseUrl + 'authregister',
-                        data: authData,
-                        headers: { 'Content-Type': 'multipart/form-data' }
+            async RegisterCompany(vuexContext, authData) {
+                try {
+                    await this.$axios.$post(process.env.baseUrl + 'authregistercompany', authData).then((response) => {
+                        vuexContext.commit("setToken", response.token)
+                        localStorage.setItem("token", response.token)
+                        Cookies.set("jwt", response.token);
                     })
-                    .then(function(response) {
-                        //handle success
-                        vuexContext.commit("setToken", response.data.token)
-                        localStorage.setItem("token", response.data.token)
-
-                        Cookies.set("jwt", response.data.token);
-
-                    })
-                    .catch(function(err) {
-                        //handle error
-
-
-
-                    })
+                    this.$toast.show('Success .....')
+                    this.$router.push('/dashboard')
+                } catch (e) {
+                    var err = []
+                    if (e.response) {
+                        if (e.response.data) {
+                            var obj = JSON.parse(JSON.stringify(e.response.data))
+                            Object.keys(obj).forEach(function(key) {
+                                err.push(obj[key][0])
+                            });
+                        }
+                    }
+                    for (var i = 0; i < err.length; i++) {
+                        this.$toast.show(err[i])
+                    }
+                    this.$toast.show('Failed Register')
+                }
+            },
+            logout(vuexContext) {
+                vuexContext.commit("clearToken");
+                Cookie.remove("jwt");
+                if (process.client) {
+                    localStorage.removeItem("token");
+                }
             },
             initAuth(vuexContext, req) {
                 let token;
@@ -113,7 +113,7 @@ const createStore = () => {
                 }
 
                 vuexContext.commit("setToken", token);
-            },
+            }
         },
         getters: {
             isAuthenticated(state) {

@@ -23,9 +23,9 @@
                         <tbody>
                             <template v-for="trackings in tracking">
                                 <tr href="#">
-                                    <td>12 Jun 2020</td>
+                                    <td>{{trackings.date_create}}</td>
                                     <td>{{trackings.id_order}}</td>
-                                    <td>Jhon Doe</td>
+                                    <td>{{trackings.order.penerima_nama}}</td>
                                     <td v-if="trackings.status === 1 ">
                                         <div class="icon-tracking">
                                             <span class="status-tracking tr-merah"> <i class="fa fa-file-import"></i></span>

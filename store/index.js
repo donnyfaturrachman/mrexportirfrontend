@@ -3,17 +3,62 @@ import Cookies from "js-cookie"
 const createStore = () => {
     return new Vuex.Store({
         state: {
-            token: null
+            token: null,
+            loadedAddress: []
         },
         mutations: {
             setToken(state, token) {
                 state.token = token;
+            },
+            setLoadedAdress(state, address) {
+                state.loadedAddress = address
             },
             clearToken(state) {
                 state.token = null;
             }
         },
         actions: {
+            async listAddress(vuexContext, Data) {
+                try {
+                    await this.$axios.$get(process.env.baseUrl + 'listaddress', Data).then((response) => {
+
+                    });
+                    this.$toast.show('Success .....')
+                } catch (e) {
+                    this.$toast.show('Failed To Send Email')
+                }
+            },
+            async sendContact(vuexContext, Data) {
+                try {
+                    await this.$axios.$post(process.env.baseUrl + 'sendcontactus', Data).then((response) => {
+
+                    });
+                    this.$toast.show('Success .....')
+                } catch (e) {
+                    this.$toast.show('Failed To Send Email')
+                }
+            },
+            async updateAddress(vuexContext, Data) {
+                try {
+                    console.log(Data)
+                    await this.$axios.$post(process.env.baseUrl + 'updateaddress', Data).then((response) => {
+
+                    });
+                    this.$toast.show('Success .....')
+                } catch (e) {
+                    this.$toast.show('Failed To Add Address')
+                }
+            },
+            async insertAddress(vuexContext, Data) {
+                try {
+                    await this.$axios.$post(process.env.baseUrl + 'insertaddress', Data).then((response) => {
+
+                    });
+                    this.$toast.show('Success .....')
+                } catch (e) {
+                    this.$toast.show('Failed To Add Address')
+                }
+            },
             async loginUser(vuexContext, authData) {
                 try {
                     await this.$axios.$post(process.env.baseUrl + 'authlogin', authData).then((response) => {

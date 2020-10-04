@@ -36,10 +36,12 @@ export default {
      ** https://nuxtjs.org/guide/plugins
      */
     plugins: [
-        { src: '~/assets/dashboard/lib/jquery/jquery.min.js', ssr: false },
+
+
         { src: '~/assets/dashboard/lib/bootstrap/js/bootstrap.bundle.min.js', ssr: false },
 
         { src: '~/assets/dashboard/js/ResizeSensor.js', ssr: false },
+
 
     ],
     /*

@@ -1,6 +1,6 @@
 <template>
 <div class="br-sideleft sideleft-scrollbar">
-    <a href="create-shipment"><button class="btn btn-me bd-2 create-ship"><span class="menu-item-label">Create Shipment</span></button></a>
+    <a href="/dashboard/create-shipment"><button class="btn btn-me bd-2 create-ship"><span class="menu-item-label">Create Shipment</span></button></a>
     <label class="sidebar-label pd-x-10 mg-t-20 op-3">Navigation</label>
     <ul class="br-sideleft-menu">
         <li class="br-menu-item">

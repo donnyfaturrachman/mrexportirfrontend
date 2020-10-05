@@ -50,7 +50,19 @@
                                         </div>
                                         Delivered
                                     </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a href="#" class="btn btn-outline-primary btn-icon mg-r-5" data-toggle="dropdown">
+                                                <div><i class="icon ion-more"></i></div>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-tracking pd-10 wd-150">
+                                                <nav class="nav nav-style-2 flex-column">
+                                                    <nuxt-link :to="{ path: '/dashboard/order/' + trackings.id_order}" class="nav-link"><i class="icon ion-ios-gear"></i> Print DMS</nuxt-link>
 
+                                                </nav>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             </template>
                         </tbody>

@@ -320,7 +320,7 @@ export default {
     methods: {
         async submitForm() {
             let i = 0
-            if ($("#kode_kota_tujuan").val() == null) {
+            if ($("#kode_kota_tujuan").val() == "") {
                 this.$toast.show('Choose Destination');
                 return 0;
             }

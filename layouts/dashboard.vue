@@ -10,7 +10,7 @@ export default {
             script: [{
                 src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'
             }, {
-                src: 'http://18.220.186.165/assets/js/select2.js'
+                src: 'https://katadata-s3-public.s3.ap-southeast-1.amazonaws.com/karhutla/select2.js'
             }],
             link: [
 
@@ -36,7 +36,7 @@ export default {
                 },
                 {
                     rel: 'stylesheet',
-                    href: 'http://18.220.186.165/assets/css/select2.css'
+                    href: 'https://katadata-s3-public.s3.ap-southeast-1.amazonaws.com/karhutla/select2.css'
                 }
             ]
         }

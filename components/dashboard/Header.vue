@@ -45,7 +45,7 @@ export default {
 
         onLogout() {
             this.$store.dispatch('logout')
-            window.location.href = "/dashboard/auth/login"
+            window.location.href = "/auth/login"
         }
     }
 }

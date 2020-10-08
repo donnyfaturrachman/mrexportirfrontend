@@ -83,7 +83,8 @@ export default {
                     dataType: 'json',
                     data: function (term, page) {
                         return {
-                            q: term
+                            q: term,
+                            id_user: this.$store.getters.loadedId
                         };
                     },
                     results: function (data, page) {

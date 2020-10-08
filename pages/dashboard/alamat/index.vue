@@ -8,14 +8,15 @@
             <div class="br-section-wrapper">
                 <div class="table-wrapper">
                     <div class="row">
-                        <div class="col-md-9">
-                            <h6 class="br-section-label">Daftar Alamat</h6>
+                        <div class="col-md-3">
+                            <form method="post" @submit.prevent="fetchPosts">
+                                <input id="searchbox" type="text" class="form-control" placeholder="Search Alamat" v-model="keyword">
+                            </form>
                         </div>
-                        <div class="col-md-3 text-right">
+                        <div class="col-md-9 text-right">
                             <nuxt-link to="/dashboard/createaddress" class="btn btn-danger btn-small mg-b-10">Tambah Alamat </nuxt-link>
                         </div>
                     </div>
-
                     <table class="table display responsive nowrap" id="datatable1">
                         <thead>
                             <tr>
@@ -58,7 +59,6 @@
         </div><!-- br-pagebody -->
         <Footer />
     </div>
-
 </div>
 </template>
 
@@ -92,7 +92,7 @@ export default {
 
         },
         fetchPosts() {
-            this.$axios.$get(process.env.baseUrl + 'listaddress?page=' + this.pagination.current_page).then((response) => {
+            this.$axios.$get(process.env.baseUrl + 'listaddress?keyword=' + this.keyword + '&&id_user=' + this.$store.getters.loadedId + '&&page=' + this.pagination.current_page).then((response) => {
                 if (response[0].data) {
                     this.alamat = response[0].data.data
                     this.pagination = response[0].pagination
@@ -104,6 +104,7 @@ export default {
     data() {
         return {
             alamat: [],
+            keyword: '',
             pagination: {
                 'current_page': 1
             }

@@ -4,17 +4,34 @@ const createStore = () => {
     return new Vuex.Store({
         state: {
             token: null,
-            loadedAddress: []
+            loadedAddress: [],
+            email: null,
+            iduser: null,
+            name: null
         },
         mutations: {
             setToken(state, token) {
-                state.token = token;
+                state.token = token
+            },
+            setEmail(state, email) {
+                state.email = email
+            },
+            setId(state, id) {
+                state.id = id
+            },
+            setName(state, name) {
+                state.name = name
             },
             setLoadedAdress(state, address) {
                 state.loadedAddress = address
             },
             clearToken(state) {
                 state.token = null;
+            },
+            clearUser(state) {
+                state.email = null
+                state.iduser = null
+                state.name = null
             }
         },
         actions: {
@@ -63,6 +80,15 @@ const createStore = () => {
                 try {
                     await this.$axios.$post(process.env.baseUrl + 'authlogin', authData).then((response) => {
                         vuexContext.commit("setToken", response.token)
+                        vuexContext.commit("setEmail", response.data.email)
+                        vuexContext.commit("setId", response.data.id)
+                        vuexContext.commit("setName", response.data.name)
+                        localStorage.setItem("id", response.data.id)
+                        Cookies.set("id", response.data.id)
+                        localStorage.setItem("name", response.data.name)
+                        Cookies.set("name", response.data.name)
+                        localStorage.setItem("email", response.data.email)
+                        Cookies.set("email", response.data.email)
                         localStorage.setItem("token", response.token)
                         Cookies.set("jwt", response.token);
                     });
@@ -76,6 +102,15 @@ const createStore = () => {
                     await this.$axios.$post(process.env.baseUrl + 'authregister', authData).then((response) => {
 
                         vuexContext.commit("setToken", response.token)
+                        vuexContext.commit("setEmail", response.data.email)
+                        vuexContext.commit("setId", response.data.id)
+                        vuexContext.commit("setName", response.data.name)
+                        localStorage.setItem("id", response.data.id)
+                        Cookies.set("id", response.data.id)
+                        localStorage.setItem("name", response.data.name)
+                        Cookies.set("name", response.data.name)
+                        localStorage.setItem("email", response.data.email)
+                        Cookies.set("email", response.data.email)
                         localStorage.setItem("token", response.token)
                         Cookies.set("jwt", response.token);
                     })
@@ -102,6 +137,15 @@ const createStore = () => {
                 try {
                     await this.$axios.$post(process.env.baseUrl + 'authregistercompany', authData).then((response) => {
                         vuexContext.commit("setToken", response.token)
+                        vuexContext.commit("setEmail", response.data.email)
+                        vuexContext.commit("setId", response.data.id)
+                        vuexContext.commit("setName", response.data.name)
+                        localStorage.setItem("id", response.data.id)
+                        Cookies.set("id", response.data.id)
+                        localStorage.setItem("name", response.data.name)
+                        Cookies.set("name", response.data.name)
+                        localStorage.setItem("email", response.data.email)
+                        Cookies.set("email", response.data.email)
                         localStorage.setItem("token", response.token)
                         Cookies.set("jwt", response.token);
                     })
@@ -132,6 +176,9 @@ const createStore = () => {
             },
             initAuth(vuexContext, req) {
                 let token;
+                let email;
+                let id;
+                let name;
                 let expirationDate;
 
                 if (req) {
@@ -142,25 +189,60 @@ const createStore = () => {
                     }
 
                     const jwtCookie = req.headers.cookie
-                        .replace("jwt=", " ");
+                        .split(";")
+                        .find(c => c.trim().startsWith("jwt=")).replace("jwt=", " ");
+                    const jwtid = req.headers.cookie
+                        .split(";")
+                        .find(c => c.trim().startsWith("id=")).replace("id=", " ");
+                    const jwtemail = req.headers.cookie
+                        .split(";")
+                        .find(c => c.trim().startsWith("email=")).replace("email=", " ");
+                    const jwtname = req.headers.cookie
+                        .split(";")
+                        .find(c => c.trim().startsWith("name=")).replace("name=", " ");
 
                     if (!jwtCookie) {
                         return;
                     }
 
-
-                    token = jwtCookie;
-
+                    if (!jwtid) {
+                        return;
+                    }
+                    if (!jwtemail) {
+                        return;
+                    }
+                    if (!jwtname) {
+                        return;
+                    }
+                    token = jwtCookie
+                    id = jwtid
+                    email = jwtemail
+                    name = jwtname
                 } else {
 
                     token = localStorage.getItem("token");
+                    email = localStorage.getItem("email");
+                    name = localStorage.getItem("name");
+                    id = localStorage.getItem("id");
                     expirationDate = localStorage.getItem("tokenExpiration");
                 }
 
-                vuexContext.commit("setToken", token);
+                vuexContext.commit("setToken", token)
+                vuexContext.commit("setEmail", email)
+                vuexContext.commit("setId", id)
+                vuexContext.commit("setName", name)
             }
         },
         getters: {
+            loadedEmail(state) {
+                return state.email
+            },
+            loadedName(state) {
+                return state.name
+            },
+            loadedId(state) {
+                return state.id
+            },
             isAuthenticated(state) {
 
                 return state.token != null

@@ -11,6 +11,8 @@ export default {
                 src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'
             }, {
                 src: 'https://katadata-s3-public.s3.ap-southeast-1.amazonaws.com/karhutla/select2.js'
+            }, {
+                src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js'
             }],
             link: [
 

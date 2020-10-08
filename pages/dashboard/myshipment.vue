@@ -9,7 +9,18 @@
 
             <div class="card bd-0 shadow-base pd-25 pd-xs-40 mg-t-20">
                 <div class="table-wrapper">
-                    <h6 class="br-section-label" style="margin-top: 10px !important;">Daftar Kiriman</h6>
+                    <div class="row">
+                        <div class='col-md-9'>
+                            <h6 class="br-section-label" style="margin-top: 10px !important;">Daftar Kiriman</h6>
+                        </div>
+                        <div class="col-md-3">
+                            <form method="post" @submit.prevent="fetchPosts">
+                                <input id="searchbox" type="text" class="form-control" placeholder="Kode Pengiriman" v-model="keyword">
+                            </form>
+                        </div>
+
+                    </div>
+
                     <table id="datatable1" class="table display responsive nowrap">
                         <thead>
                             <tr>
@@ -93,6 +104,7 @@ export default {
     data() {
         return {
             tracking: [],
+            keyword: '',
             pagination: {
                 'current_page': 1
             }
@@ -103,7 +115,8 @@ export default {
     },
     methods: {
         fetchPosts() {
-            this.$axios.$get(process.env.baseUrl + 'listtracking?page=' + this.pagination.current_page).then((response) => {
+            console.log(this.$store.getters.loadedId)
+            this.$axios.$get(process.env.baseUrl + 'listtracking?id_order=' + this.keyword + '&&id_user=' + this.$store.getters.loadedId + '&&page=' + this.pagination.current_page).then((response) => {
                 if (response[0].data) {
                     this.tracking = response[0].data.data
                     this.pagination = response[0].pagination

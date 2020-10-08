@@ -14,7 +14,7 @@ export default {
      ** See https://nuxtjs.org/api/configuration-head
      */
     head: {
-        title: process.env.npm_package_name || '',
+        title: 'Mister Exportir',
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -36,12 +36,6 @@ export default {
      ** https://nuxtjs.org/guide/plugins
      */
     plugins: [
-
-
-        { src: '~/assets/dashboard/lib/bootstrap/js/bootstrap.bundle.min.js', ssr: false },
-
-        { src: '~/assets/dashboard/js/ResizeSensor.js', ssr: false },
-
 
     ],
     /*

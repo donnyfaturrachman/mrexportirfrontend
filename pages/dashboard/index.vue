@@ -115,20 +115,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group mg-b-0">
                                                 <label class="d-block">Jenis</label>
-                                                <select id="select-dropdown" class="form-control wd-100p select2" data-placeholder="Choose origin">
-                                                    <option value="sfo">Elektronik &amp; Mesin (tanpa baterai)
-                                                    </option>
-                                                    <option value="lax">Barang Konsumsi (makanan, minuman, bahan masak, dll)
-                                                    </option>
-                                                    <option value="lax">Kendaraan &amp; Spareparts</option>
-                                                    <option value="lax">Kain &amp; Pakaian
-                                                    </option>
-                                                    <option value="lax">Peralatan Rumah
-                                                    </option>
-                                                    <option value="lax">Obat &amp; Kosmetik
-                                                    </option>
-
-                                                </select>
+                                                <input type="hidden" id="kode_barang" name="kode_barang" class="input-top">
+                                                <input type="hidden" id="barang_text" name="barang_text">
                                             </div>
                                             <!-- form-group -->
                                         </div>
@@ -145,7 +133,7 @@
                                     <div class="col-lg-1">
                                         <div class="form-group mg-b-0">
                                             <label class="d-block">Qty</label>
-                                            <input type="text" class="form-control tx-14" placeholder="..." v-model="trans.qty">
+                                            <input type="text" class="form-control tx-14" placeholder="..." v-model="trans.qty" @keypress='validate($event)'>
                                         </div>
                                         <!-- form-group -->
 
@@ -161,21 +149,22 @@
                                         <div class="form-group mg-b-0">
                                             <label class="d-block">Kemasan</label>
                                             <select id="select-dropdown" class="form-control wd-100p select2" data-placeholder="Choose origin" v-model="trans.kemasan">
-                                                <option value="sfo">Box</option>
-                                                <option value="lax">Kardus</option>
+                                                <template v-for="pckg in package">
+                                                    <option v-bind:value="pckg.id">{{pckg.title}}</option>
 
+                                                </template>
                                             </select>
                                         </div>
                                         <!-- form-group -->
                                     </div>
-                                    <div class="col-md-6 col-lg-2 mg-t-10 mg-md-t-0">
+                                    <div class=" col-md-6 col-lg-2 mg-t-10 mg-md-t-0">
                                         <div class="form-group mg-b-0">
                                             <label class="d-block">Harga</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">Rp</span>
                                                 </div>
-                                                <input type="text" class="form-control" v-model="trans.harga">
+                                                <input type="text" class="form-control" v-model="trans.harga" @keypress='validate($event)'>
 
                                             </div>
                                         </div>
@@ -186,7 +175,7 @@
                                             <label>Dimensi</label>
                                             <div class="input-group">
 
-                                                <input type="text" class="form-control" placeholder="P" v-model="trans.p"><input type="text" class="form-control" placeholder="L" v-model="trans.l"><input type="text" class="form-control" placeholder="T" v-model="trans.t">
+                                                <input type="text" class="form-control" placeholder="P" @keypress='validate($event)' v-model="trans.p"><input type="text" class="form-control" placeholder="L" v-model="trans.l" @keypress='validate($event)'><input type="text" class="form-control" placeholder="T" v-model="trans.t" @keypress='validate($event)'>
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">cm</span>
                                                 </div>
@@ -198,7 +187,7 @@
                                         <div class="form-group mg-b-0">
                                             <label>Berat</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control" v-model="trans.berat">
+                                                <input type="text" class="form-control" v-model="trans.berat" @keypress='validate($event)'>
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">Kg</span>
                                                 </div>
@@ -217,7 +206,7 @@
                             </div>
                             <div class="card bd-0  mg-t-20">
 
-                                <button type="submit" class="btn btn-primary btn-kirim tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium" data-toggle="modal" data-target="#modaldemo2">Dapatkan Harga Terbaik</button>
+                                <button type="submit" class="btn btn-primary btn-kirim tx-11 tx-uppercase pd-y-12 pd-x-25 tx-mont tx-medium">Dapatkan Harga Terbaik</button>
                             </div>
                         </section>
 
@@ -236,7 +225,7 @@
                                                 <table class="table table-hover mg-b-0" style="width: 100%;  margin: 0 auto;">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 10%; color: #868ba1 !important;"></th>
+
                                                             <th style="width: 20%; color: #868ba1 !important;">Moda</th>
                                                             <th style="width: 20%; color: #868ba1 !important;">Layanan</th>
                                                             <th style="width: 25%; color: #868ba1 !important;">Harga Pengiriman</th>
@@ -245,13 +234,16 @@
                                                     <tbody>
 
                                                         <tr>
-                                                            <th style="width: 10%; color: #343a40 !important" scope="row">
-                                                                <label class="rdiobox">
-                                                                    <input name="rdio" type="radio">
-                                                                    <span></span>
-                                                                </label>
-                                                            </th>
-                                                            <td style="width: 20%; color: #343a40 !important">Freight</td>
+
+                                                            <td style="width: 20%; color: #343a40 !important">
+                                                                <template v-if="tipe_pengiriman == 1 ">
+                                                                    Sea
+                                                                </template>
+                                                                <template v-if="tipe_pengiriman == 2 ">
+                                                                    Air
+                                                                </template>
+                                                                Freight
+                                                            </td>
                                                             <td style="width: 20%; color: #343a40 !important">Door to&nbsp;Port</td>
                                                             <td style="width: 25%; color: #343a40 !important">Rp. {{subtotal}}</td>
                                                         </tr>
@@ -300,6 +292,7 @@ export default {
     data() {
         return {
             subtotal: 0,
+            package: [],
             category_cargo: 1,
             tipe_pengiriman: 1,
             tipe_delivery: 1,
@@ -318,35 +311,65 @@ export default {
         }
     },
     methods: {
+        rupiah(angka) {
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        },
+        validate(evt) {
+            var theEvent = evt || window.event;
+
+            // Handle paste
+            if (theEvent.type === 'paste') {
+                key = event.clipboardData.getData('text/plain');
+            } else {
+                // Handle key press
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+            }
+            var regex = /[0-9]|\./;
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        },
         async submitForm() {
             let i = 0
-            if ($("#kode_kota_tujuan").val() == null) {
+            this.subtotal = 0
+            if ($("#kode_kota_tujuan").val() == "" || $("#kode_kota_tujuan").val() == null) {
                 this.$toast.show('Choose Destination');
-                return 0;
-            }
-            for (i = 0; i < this.transaksi.length; i++) {
-                var bodyFormData = new FormData()
-                bodyFormData.append('category_cargo', this.category_cargo)
-                bodyFormData.append('tipe_pengiriman', this.tipe_pengiriman)
-                bodyFormData.append('tipe_delivery', this.tipe_delivery)
-                bodyFormData.append('tipe_package', this.tipe_package)
-                bodyFormData.append('qty', this.transaksi[i].qty)
-                bodyFormData.append('deskripsi', this.transaksi[i].deskripsi)
-                bodyFormData.append('kemasan', this.transaksi[i].kemasan)
-                bodyFormData.append('harga', this.transaksi[i].harga)
-                bodyFormData.append('panjang', this.transaksi[i].p)
-                bodyFormData.append('lebar', this.transaksi[i].l)
-                bodyFormData.append('tinggi', this.transaksi[i].t)
-                bodyFormData.append('berat', this.transaksi[i].berat)
-                bodyFormData.append('destination', $("#kode_kota_tujuan").val())
-                try {
-                    await this.$axios.$post(process.env.baseUrl + 'hargalisting', bodyFormData).then((response) => {
-                        this.subtotal = this.subtotal + response.paket.door_to_port
-                    });
+                return;
+            } else {
+                for (i = 0; i < this.transaksi.length; i++) {
+                    var bodyFormData = new FormData()
+                    bodyFormData.append('category_cargo', this.category_cargo)
+                    bodyFormData.append('tipe_pengiriman', this.tipe_pengiriman)
+                    bodyFormData.append('tipe_delivery', this.tipe_delivery)
+                    bodyFormData.append('tipe_package', this.tipe_package)
+                    bodyFormData.append('qty', this.transaksi[i].qty)
+                    bodyFormData.append('deskripsi', this.transaksi[i].deskripsi)
+                    bodyFormData.append('kemasan', this.transaksi[i].kemasan)
+                    bodyFormData.append('harga', this.transaksi[i].harga)
+                    bodyFormData.append('panjang', this.transaksi[i].p)
+                    bodyFormData.append('lebar', this.transaksi[i].l)
+                    bodyFormData.append('tinggi', this.transaksi[i].t)
+                    bodyFormData.append('berat', this.transaksi[i].berat)
+                    bodyFormData.append('destination', $("#kode_kota_tujuan").val())
+                    try {
+                        await this.$axios.$post(process.env.baseUrl + 'hargalisting', bodyFormData).then((response) => {
+                            this.subtotal = this.subtotal + response.paket.door_to_port
 
-                } catch (e) {
-                    this.$toast.show('Failed Data')
+                        });
+
+                    } catch (e) {
+                        this.$toast.show('Failed Data')
+                    }
                 }
+                this.subtotal = this.rupiah(this.subtotal)
+                $(document).ready(function () {
+                    $('#modaldemo2').modal('show');
+                })
             }
 
         },
@@ -370,7 +393,14 @@ export default {
         }
     },
     mounted() {
+        this.$axios.$post(process.env.baseUrl + 'listbarangpackage').then((response) => {
+            console.log(response[0].data)
+            if (response[0].data) {
+                this.package = response[0].data
 
+            }
+
+        });
         $(document).ready(function () {
 
             $("#kode_kota_asal").select2({
@@ -403,6 +433,37 @@ export default {
                 $('#kota_asal_text').val(e.added.text);
 
             });
+
+            $("#kode_barang").select2({
+                placeholder: "Jenis Item",
+                initSelection: function (element, callback) {
+                    callback({
+                        id: "",
+                        text: ""
+                    });
+                },
+                minimumInputLength: 1,
+                ajax: {
+                    url: process.env.baseUrl + "barangjenisselect2",
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            q: term
+                        };
+                    },
+                    results: function (data, page) {
+
+                        return {
+                            results: data[0].data
+                        };
+                    },
+                    cache: false
+                },
+            }).on("change", function (e) {
+
+                $('#barang_text').val(e.added.text);
+
+            });
             $("#kode_kota_tujuan").select2({
                 placeholder: "Kota Tujuan",
                 initSelection: function (element, callback) {
@@ -433,105 +494,6 @@ export default {
                 $('#kota_tujuan_text').val(e.added.text);
 
             });
-            var count = 0;
-            dynamic_field(count);
-
-            function dynamic_field(number) {
-                var html = '';
-                html += '<div class="row justify-content-center align-items-center" id="rincian-barang' + number + '">';
-                html += '<div class="col-lg-1">';
-                html += '<div class="form-group mg-b-0">';
-                html += '<label class="d-block">Qty</label>';
-                html += '<input type="text" class="form-control tx-14" placeholder="..."  v-model="qty">';
-                html += '</div>';
-
-                html += '</div>';
-                html += '<div class="col-md-5 col-lg-3">';
-                html += '<div class="form-group mg-b-0">';
-                html += '<label class="d-block">Deskripsi</label>';
-                html += '<input type="text" class="form-control tx-14" placeholder="...">';
-                html += '</div>';
-
-                html += '</div>';
-
-                html += '<div class="col-md-6 col-lg-2 mg-t-10 mg-md-t-0">';
-                html += '<div class="form-group mg-b-0">';
-                html += '<label class="d-block">Kemasan</label>';
-                html += '<select id="select-dropdown" class="form-control wd-100p select2" data-placeholder="Choose origin">';
-                html += '<option value="sfo">Box</option>';
-                html += '<option value="lax">Kardus</option>';
-
-                html += '</select>';
-                html += '</div>';
-
-                html += '</div>';
-
-                html += '<div class="col-md-6 col-lg-2 mg-t-10 mg-md-t-0">';
-                html += '<div class="form-group mg-b-0">';
-                html += '<label class="d-block">Harga</label>';
-                html += '<div class="input-group">';
-                html += '<div class="input-group-prepend">';
-                html += '<span class="input-group-text">Rp</span>';
-                html += '</div>';
-                html += '<input type="text" class="form-control">';
-
-                html += '</div>';
-                html += '</div>';
-
-                html += '</div>';
-
-                html += '<div class="col-md-4 col-lg-2 mg-t-10 mg-lg-t-0">';
-                html += '<div class="form-group mg-b-0">';
-                html += '<label>Dimensi</label>';
-                html += '<div class="input-group">';
-
-                html += '<input type="text" class="form-control" placeholder="P"><input type="text" class="form-control" placeholder="L"><input type="text" class="form-control" placeholder="T">';
-                html += '<div class="input-group-prepend">';
-                html += '<span class="input-group-text">cm</span>';
-                html += '</div>';
-                html += '</div>';
-                html += '</div>';
-
-                html += '</div>';
-
-                html += '<div class="col-md-4 col-lg-2 mg-t-10 mg-lg-t-0">';
-                html += '<div class="form-group mg-b-0">';
-                html += '<label>Berat</label>';
-                html += '<div class="input-group">';
-
-                html += '<input type="text" class="form-control">';
-                html += '<div class="input-group-prepend">';
-                html += '<span class="input-group-text">Kg</span>';
-                html += '</div>';
-                html += '<a href="#" id="remove-rincian-wrapper" class="btn btn-outline-dark btn-icon mg-r-5" style=" border-color: transparent !important; ">';
-                html += '<div>';
-                html += '<i class="icon ion-trash-a" style=" font-size: 22px; "></i>';
-                html += ' <input type="hidden" id="count_temp" name="count_temp" value="' + number + '">';
-                html += '</div>';
-                html += '</a>';
-                html += '</div>';
-                html += '</div>';
-
-                html += '</div>';
-
-                html += '</div>';
-                if (number > 0) {
-                    $('#rincian-barang-wrapper').append(html);
-                }
-            }
-
-            $(document).on('click', '#add-rincian-wrapper', function () {
-                console.log('add', count);
-                count++;
-                dynamic_field(count);
-
-            });
-
-            $(document).on('click', '#remove-rincian-wrapper', function (e) {
-                e.preventDefault();
-                $(this).parent().parent().parent().parent().remove();
-                count--;
-            });
 
         });
     }
@@ -546,7 +508,8 @@ a.select2-choice.select2-default,
 }
 
 div#s2id_kode_kota_asal,
-div#s2id_kode_kota_tujuan {
+div#s2id_kode_kota_tujuan,
+div#s2id_kode_barang {
     width: 100%;
 }
 </style>

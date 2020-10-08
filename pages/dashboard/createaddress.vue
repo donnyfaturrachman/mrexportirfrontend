@@ -176,7 +176,7 @@ export default {
     },
     data() {
         return {
-            id_user: 1,
+            id_user: this.$store.getters.loadedId,
             nama: '',
             company: '',
             no_hp: '',

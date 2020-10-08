@@ -890,7 +890,7 @@ export default {
 
                 })
                 this.$toast.show('Success .....')
-                this.$router.push('/dashboard')
+                window.location.href = "/dashboard"
             } catch (e) {
                 this.$toast.show('Failed .....')
             }

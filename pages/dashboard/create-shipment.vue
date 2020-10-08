@@ -569,10 +569,10 @@
                             <hr class="mg-b-60">
                             <div class="row">
                                 <div class="offset-md-2 col-md-4 col-sm-12" style="margin-bottom: 20px">
-                                    <a aria-label="Close" class="btn btn-outline-info btn-block" data-dismiss="modal" href="">Ubah Rincian</a>
+                                    <a aria-label="Close" class="btn btn-outline-info btn-block" data-dismiss="modal" href="#">Ubah Rincian</a>
                                 </div>
                                 <div class="col-md-4">
-                                    <a class="btn btn-info btn-block" href="">Lanjut Ke Pembayaran</a>
+                                    <a class="btn btn-info btn-block" href="#" @click="submitData">Lanjut Ke Pembayaran</a>
                                 </div>
                             </div>
                         </div><!-- card-body -->
@@ -808,6 +808,93 @@ export default {
                 t: '',
                 berat: ''
             });
+        },
+        async submitData() {
+            var bodyFormData = new FormData()
+            var deskripsi = []
+            var harga = []
+            var panjang = []
+            var lebar = []
+            var tinggi = []
+            var berat = []
+            var qty_barang = []
+            var id_item = []
+            var title = []
+            var jumlah = []
+            var satuan = []
+            var harga_satuan = []
+            var harga_total = []
+            var trans = this.transaksi
+            var item_doc = this.items_dokumen
+            var item_non_doc = this.items_non_dokumen
+            bodyFormData.append('id_user', this.id_user)
+            bodyFormData.append('kota_asal', $("#kode_kota_asal").val())
+            bodyFormData.append('kota_tujuan', $("#kode_kota_tujuan").val())
+            bodyFormData.append('id_via_pengiriman', this.tipe_pengiriman)
+            bodyFormData.append('id_jenis_pengiriman', this.tipe_pengiriman)
+            bodyFormData.append('id_tipe_pengiriman', 1)
+            bodyFormData.append('id_barang_kategori', this.category_cargo)
+            bodyFormData.append('id_barang_jenis', this.tipe_package)
+            bodyFormData.append('qty_container', 0)
+            bodyFormData.append('qty_container', 0)
+            bodyFormData.append('pengirim_nama', this.pengirim_nama)
+            bodyFormData.append('pengirim_negara', $("#kode_negara_asal").val())
+            bodyFormData.append('pengirim_kodepos', this.pengirim_kodepos)
+            bodyFormData.append('pengirim_kodepos', this.pengirim_kodepos)
+            bodyFormData.append('pengirim_kota', $("#kota_asal_text").val())
+            bodyFormData.append('pengirim_alamat', this.pengirim_alamat)
+            bodyFormData.append('pengirim_perusahaan', this.pengirim_perusahaan)
+            bodyFormData.append('pengirim_telepon', this.pengirim_telepon)
+            bodyFormData.append('pengirim_email', this.pengirim_email)
+            bodyFormData.append('pengirim_koleksi_intruksi', this.pengirim_koleksi_intruksi)
+            bodyFormData.append('penerima_nama', this.penerima_nama)
+            bodyFormData.append('penerima_negara', $("#kode_negara_tujuan").val())
+            bodyFormData.append('penerima_kodepos', this.penerima_kodepos)
+            bodyFormData.append('penerima_kota', $("#kota_tujuan_text").val())
+            bodyFormData.append('penerima_alamat', this.penerima_alamat)
+            bodyFormData.append('penerima_perusahaan', this.penerima_perusahaan)
+            bodyFormData.append('penerima_telepon', this.penerima_telepon)
+            bodyFormData.append('penerima_email', this.penerima_email)
+            bodyFormData.append('referensi_customer', this.referensi_customer)
+            bodyFormData.append('total_harga', this.subtotal + this.subtotal_item)
+            Object.keys(this.transaksi).forEach(function (key) {
+                bodyFormData.append('deskripsi[]', trans[key].deskripsi)
+                bodyFormData.append('harga[]', trans[key].harga)
+                bodyFormData.append('panjang[]', trans[key].p)
+                bodyFormData.append('lebar[]', trans[key].l)
+                bodyFormData.append('tinggi[]', trans[key].t)
+                bodyFormData.append('berat[]', trans[key].berat)
+                bodyFormData.append('qty_barang[]', trans[key].qty)
+                bodyFormData.append('barang_package[]', trans[key].kemasan)
+            })
+            Object.keys(this.items_dokumen).forEach(function (key) {
+                bodyFormData.append('id_item[]', item_doc[key].id)
+                bodyFormData.append('title[]', item_doc[key].nama)
+                bodyFormData.append('jumlah[]', item_doc[key].qty)
+                bodyFormData.append('satuan[]', "-")
+                bodyFormData.append('harga_satuan[]', item_doc[key].harga)
+                bodyFormData.append('harga_total[]', item_doc[key].harga * item_doc[key].qty)
+            })
+            Object.keys(this.items_non_dokumen).forEach(function (key) {
+
+                bodyFormData.append('id_item[]', item_non_doc[key].id)
+                bodyFormData.append('title[]', item_non_doc[key].nama)
+                bodyFormData.append('jumlah[]', item_non_doc[key].qty)
+                bodyFormData.append('satuan[]', "-")
+                bodyFormData.append('harga_satuan[]', item_non_doc[key].harga)
+                bodyFormData.append('harga_total[]', item_non_doc[key].harga * item_doc[key].qty)
+            })
+
+            try {
+                await this.$axios.$post(process.env.baseUrl + 'insertorder', bodyFormData).then((response) => {
+
+                })
+                this.$toast.show('Success .....')
+                this.$router.push('/dashboard')
+            } catch (e) {
+                this.$toast.show('Failed .....')
+            }
+
         }
     },
     mounted() {

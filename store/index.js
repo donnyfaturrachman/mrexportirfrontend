@@ -115,7 +115,7 @@ const createStore = () => {
                         Cookies.set("jwt", response.token);
                     })
                     this.$toast.show('Success .....')
-                    this.$router.push('/dashboard')
+                    window.location.href = "/dashboard"
                 } catch (e) {
                     var err = []
                     if (e.response) {
@@ -150,7 +150,7 @@ const createStore = () => {
                         Cookies.set("jwt", response.token);
                     })
                     this.$toast.show('Success .....')
-                    this.$router.push('/dashboard')
+                    window.location.href = "/dashboard"
                 } catch (e) {
                     var err = []
                     if (e.response) {
